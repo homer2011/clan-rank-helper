@@ -148,6 +148,11 @@ public class ClanChatOverlay extends Overlay
             {
                 continue;
             }
+            
+            if (isTargetRankIgnored(targetRank))
+            {
+                continue;
+            }
 
             // New: rank detection without a whitelist
             String currentRank = findCurrentRankForPlayer(rowWidgetArray, nameWidget);
@@ -390,6 +395,25 @@ public class ClanChatOverlay extends Overlay
         for (String ignoredRank : ignored)
         {
             if (ignoredRank.trim().equalsIgnoreCase(rank.trim()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isTargetRankIgnored(String targetRank)
+    {
+        String ignoredTargetRanks = config.ignoredTargetRanks();
+        if (ignoredTargetRanks == null || ignoredTargetRanks.trim().isEmpty())
+        {
+            return false;
+        }
+    
+        String[] ignored = ignoredTargetRanks.split("[,\\n\\r]+");
+        for (String ignoredRank : ignored)
+        {
+            if (ignoredRank.trim().equalsIgnoreCase(targetRank.trim()))
             {
                 return true;
             }
